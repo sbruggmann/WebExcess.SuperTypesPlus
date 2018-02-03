@@ -1,0 +1,18 @@
+{
+    "type": "neos-package",
+    "name": "webexcess/supertypes-plus",
+    "description": "Modify Mixins for each SuperType-Definition",
+    "require": {
+        "neos/content-repository": "~3.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WebExcess\\SuperTypesPlus\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "WebExcess.SuperTypesPlus"
+        }
+    }
+}
