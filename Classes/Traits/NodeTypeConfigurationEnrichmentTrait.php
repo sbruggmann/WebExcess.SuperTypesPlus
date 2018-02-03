@@ -2,7 +2,7 @@
 namespace WebExcess\SuperTypesPlus\Traits;
 
 /**
- * 1:1 methods of the class Neos\Neos\Aspects\NodeTypeConfigurationEnrichmentAspect
+ * A nearly 1:1 copy of the class Neos\Neos\Aspects\NodeTypeConfigurationEnrichmentAspect
  */
 
 use Neos\Flow\Annotations as Flow;

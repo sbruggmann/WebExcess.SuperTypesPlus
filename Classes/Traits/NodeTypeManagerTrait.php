@@ -18,6 +18,11 @@ trait NodeTypeManagerTrait
         return $this->evaluateSuperTypeConfiguration($superTypeName, $enabled, $completeNodeTypeConfiguration);
     }
 
+    /**
+     * @param $originalSuperTypeName
+     * @param $nodeTypeConfiguration
+     * @return string
+     */
     public function getGeneratedNodeTypeName($originalSuperTypeName, $nodeTypeConfiguration)
     {
         if (array_key_exists('_name', $nodeTypeConfiguration)) {
@@ -27,6 +32,13 @@ trait NodeTypeManagerTrait
         }
     }
 
+    /**
+     * @param $superTypeName
+     * @param $superTypeModification
+     * @param $superTypeConfiguration
+     * @param $completeNodeTypeConfiguration
+     * @param $superTypes
+     */
     public function generateNodeType($superTypeName, $superTypeModification, $superTypeConfiguration, &$completeNodeTypeConfiguration, &$superTypes)
     {
         $mappingWalk = function ($superTypeModification, $superTypeConfiguration) use (&$mappingWalk) {
@@ -36,7 +48,6 @@ trait NodeTypeManagerTrait
                  *   'Vendor.Package:SuperType': false  <--
                  */
                 if ($value === false && array_key_exists($key, $superTypeConfiguration)) {
-//                    \Neos\Flow\var_dump('a '.$key);
                     unset($superTypeConfiguration[$key]);
 
                 /**
@@ -45,7 +56,6 @@ trait NodeTypeManagerTrait
                  *     'fromName': 'toName'             <--
                  */
                 } elseif (is_string($value) && array_key_exists($key, $superTypeConfiguration)) {
-//                    \Neos\Flow\var_dump('b '.$key);
                     $superTypeConfiguration[$value] = $superTypeConfiguration[$key];
                     unset($superTypeConfiguration[$key]);
 
@@ -56,7 +66,6 @@ trait NodeTypeManagerTrait
                  *       'fromName': 'toName'
                  */
                 } elseif (is_array($value) && !is_numeric($key) && array_key_exists($key, $superTypeConfiguration)) {
-//                    \Neos\Flow\var_dump('c '.$key);
                     list($superTypeModification[$key], $superTypeConfiguration[$key]) = $mappingWalk($value, $superTypeConfiguration[$key]);
 
                 /**
@@ -66,18 +75,14 @@ trait NodeTypeManagerTrait
                  *       '*': 'to*'                     <--
                  */
                 } elseif ($key == '*') {
-//                    \Neos\Flow\var_dump('d '.$key);
                     foreach ($superTypeConfiguration as $propertyName => $propertyConfiguration) {
                         $asteriskPosition = strpos($value, '*');
                         if ($asteriskPosition >= 0) {
                             $newPropertyName = str_replace('*', ($asteriskPosition == 0 ? lcfirst($propertyName) : ucfirst($propertyName)), $value);
-//                            \Neos\Flow\var_dump($newPropertyName, 'add');
                             $superTypeConfiguration[$newPropertyName] = $propertyConfiguration;
                             if ($value != '*') {
-//                                \Neos\Flow\var_dump($propertyName, 'remove');
                                 unset($superTypeConfiguration[$propertyName]);
                             }
-//                            \Neos\Flow\var_dump($superTypeConfiguration);
                         }
                     }
                 }
@@ -88,8 +93,6 @@ trait NodeTypeManagerTrait
 
         list($superTypeModification, $superTypeConfiguration) = $mappingWalk($superTypeModification, $superTypeConfiguration);
         $generatedSuperTypeName = $this->getGeneratedNodeTypeName($superTypeName, $superTypeModification);
-
-//        \Neos\Flow\var_dump(array('from' => $superTypeModification, 'to' => $superTypeConfiguration), 'generateNodeType ' . $superTypeName . ' > ' . $generatedSuperTypeName);
 
         $completeNodeTypeConfiguration[$generatedSuperTypeName] = $superTypeConfiguration;
         $superTypes[$generatedSuperTypeName] = $this->publicEvaluateSuperTypeConfiguration($generatedSuperTypeName, true, $completeNodeTypeConfiguration);
