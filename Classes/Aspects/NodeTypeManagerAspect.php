@@ -31,12 +31,14 @@ class NodeTypeManagerAspect
                 reset($superTypeModification);
                 if (is_numeric(key($superTypeModification))) {
                     foreach ($superTypeModification as $superTypeModificationItem) {
-                        if ($superTypeModificationItem === true) {
+                        if ($superTypeModificationItem === true || (array_key_exists('*', $superTypeModificationItem) && $superTypeModificationItem['*'] === true)) {
                             /**
                              * superTypes:
                              *   'Vendor.Package:SuperType':
                              *     -
                              *       true                       <--
+                             *     -
+                             *       '*': true                  <--
                              *     -
                              *       properties:
                              *         'fromName': 'toName'
