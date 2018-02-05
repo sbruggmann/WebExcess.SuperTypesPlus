@@ -1,4 +1,6 @@
 # WebExcess.SuperTypesPlus
+[![Latest Stable Version](https://poser.pugx.org/webexcess/supertypes-plus/v/stable)](https://packagist.org/packages/webexcess/supertypes-plus)
+[![License](https://poser.pugx.org/webexcess/supertypes-plus/license)](https://packagist.org/packages/webexcess/supertypes-plus)
 
 The Neos SuperTypes allow you to combine multiple sets of NodeType-Definitions, so called Mixins. That's awesome, until you get overlapping property names.
 
@@ -104,7 +106,7 @@ Generated Result:
     leftCaption:
       type: string
       ui:
-        label: ''Vendor.Package:NodeTypes.ImageMixin:properties.caption
+        label: 'Vendor.Package:NodeTypes.ImageMixin:properties.caption'
         inspector:
           group: image
           position: 200
@@ -199,10 +201,16 @@ Generated Result:
         properties:
           'property': 'newPropertyA'
       -
-        true
+        '*': true
 ```
 
-# ToDo
+## Principles
+
+- This package allows to generate dynamic Mixins out of existing ones, but with renamed or disabled parts in it
+- It only changes values, if it's needed because of a renaming, deletion, repetition or to keep the original i18n translations
+- Everything else has to be done at the right place for that.. in the NodeType-Definition itself
+
+## ToDo
 
 - Automatic group-renaming in the ui settings and for each corresponding property
 - Automatic re-positioning of properties if one mixin is used multiple times
