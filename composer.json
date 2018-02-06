@@ -2,6 +2,7 @@
     "type": "neos-package",
     "name": "webexcess/supertypes-plus",
     "description": "Modify Mixins for each SuperType-Definition",
+    "license": "MIT",
     "require": {
         "neos/content-repository": "~3.3.0"
     },
